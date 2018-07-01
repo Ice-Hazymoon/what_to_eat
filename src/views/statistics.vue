@@ -4,37 +4,75 @@
  * File Created: Saturday, 30th June 2018 9:28:09 am
  * Author: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
- * Last Modified: Saturday, 30th June 2018 11:21:02 am
+ * Last Modified: Sunday, 1st July 2018 12:01:43 am
  * Modified By: Ice-Hazymoon (imiku.me@gmail.com)
  */
 <template>
     <div class="statistics">
-        <ve-pie class="charts" :data="chartData"></ve-pie>
+        <div class="charts-p">
+            <div class="title">数据统计</div>
+            <div class="placeholder-text" v-if="!chartsLoad">暂无数据</div>
+            <ve-pie class="charts" v-if="chartsLoad" :data="chartData"></ve-pie>
+        </div>
     </div>
 </template>
 <script>
+function strMapToObj(strMap) {
+    let obj = Object.create(null);
+    for (let [k, v] of strMap) {
+        obj[k] = v;
+    }
+    return obj;
+}
 export default {
     data () {
         return {
+            chartsLoad: false,
             chartData: {
-                columns: ['日期', '访问用户'],
+                columns: ['name', '次数'],
                 rows: [
-                    { '日期': '1/1', '访问用户': 1393 },
-                    { '日期': '1/2', '访问用户': 3530 },
-                    { '日期': '1/3', '访问用户': 2923 },
-                    { '日期': '1/4', '访问用户': 1723 },
-                    { '日期': '1/5', '访问用户': 3792 },
-                    { '日期': '1/6', '访问用户': 4593 }
+                    { 'name': '1/1', '访问用户': 1393 },
+                    { 'name': '1/2', '访问用户': 3530 },
+                    { 'name': '1/3', '访问用户': 2923 },
+                    { 'name': '1/4', '访问用户': 1723 },
+                    { 'name': '1/5', '访问用户': 3792 },
+                    { 'name': '1/6', '访问用户': 4593 }
                 ]
             }
         }
-    }
+    },
+    mounted() {
+        let data = this.$storejs.get('mikuHistory');
+        if(data.length){
+            let mmm = data.map((el, index)=>{
+                return el.name
+            }).reduce((m, k) => {
+                return m.set(k, (m.get(k) || 0) + 1);
+            }, new Map());
+            let chartData = new Array();
+            mmm.forEach((el, key)=>{
+                console.log(key)
+                chartData.push({
+                    name: key,
+                    '次数': el
+                })
+            })
+            this.chartData.rows = chartData;
+            this.chartsLoad = true
+        }else{
+            this.$emit('handleText', ['暂时还没有数据哦~'])
+        }
+    },
 }
 </script>
 <style lang="scss" scoped>
 $pink: #ff44a3;
 .statistics{
-    .charts{
+    .title{
+        text-align: center;
+        margin: 10px 0 20px 0;
+    }
+    .charts-p{
         position: relative;
         padding: 15px 20px;
         margin: 30px 0;
@@ -42,6 +80,11 @@ $pink: #ff44a3;
         background-color: #fff;
         box-shadow: 0px 20px 70px -20px rgba($color: #000000, $alpha: 0.3);
         border: 2px solid $pink;
+    }
+    .placeholder-text{
+        margin: 20px 0;
+        font-size: 30px;
+        text-align: center;
     }
 }
 </style>

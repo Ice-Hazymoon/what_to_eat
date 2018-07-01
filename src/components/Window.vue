@@ -4,7 +4,7 @@
  * File Created: Wednesday, 27th June 2018 9:35:06 pm
  * Author: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
- * Last Modified: Saturday, 30th June 2018 10:40:16 am
+ * Last Modified: Saturday, 30th June 2018 8:37:41 pm
  * Modified By: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
  * Copyright 2017 - 2018
@@ -66,7 +66,7 @@
                         </div>
                     </router-link>
                 </div>
-                <router-view class="miao" :style="cardBtnTransform"></router-view>
+                <router-view class="miao" :style="cardBtnTransform" @handleText="handleText"></router-view>
             </div>
         </div>
     </div>
@@ -200,16 +200,6 @@ export default {
             const audioSrc = modelConfig.modelId === 1 ? audioArr[0][rand0] : audioArr[1][rand1];
             this.audio.src = audioSrc;
             let playPromise = this.audio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    this.audio.pause();
-                })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            } else {
-                this.audio.pause();
-            }
             this.handleText(['是…是不小心碰到了吧...', '萝莉控是什么呀?', '你看到我的小熊了吗?', '再摸的话我可要报警了！⌇●﹏●⌇', '110吗，这里有个变态一直在摸我(ó﹏ò｡)'], 'warn')
         },
         // 视觉差

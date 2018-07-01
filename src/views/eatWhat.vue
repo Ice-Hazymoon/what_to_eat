@@ -4,7 +4,7 @@
  * File Created: Saturday, 30th June 2018 9:28:09 am
  * Author: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
- * Last Modified: Saturday, 30th June 2018 10:37:26 am
+ * Last Modified: Sunday, 1st July 2018 12:12:20 am
  * Modified By: Ice-Hazymoon (imiku.me@gmail.com)
  */
 <template>
@@ -20,13 +20,13 @@
                 <svg class="icon-date" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17812" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <path d="M872 992H152A120.32 120.32 0 0 1 32 872.64v-640a120.32 120.32 0 0 1 120-120h720A120.32 120.32 0 0 1 992 232.64v640A120.32 120.32 0 0 1 872 992zM152 192A40 40 0 0 0 112 232.64v640a40 40 0 0 0 40 40h720a40 40 0 0 0 40-40v-640A40 40 0 0 0 872 192z m160 80A40 40 0 0 1 272 232.64v-160a40 40 0 0 1 80 0v160a40 40 0 0 1-40 40z m400 0A40 40 0 0 1 672 232.64v-160a40 40 0 0 1 80 0v160a40 40 0 0 1-40 40z m200 160h-800a40 40 0 0 1 0-80h800a40 40 0 0 1 0 80zM232 552.64h80v80h-80z m160 0h80v80h-80z m160 0h80v80h-80z m160 0h80v80h-80z m-480 160h80v80h-80z m160 0h80v80h-80z m160 0h80v80h-80z m160 0h80v80h-80z" p-id="17813"></path>
                 </svg>
-                <span class="text">距离下一次发工资还有 xx 天</span>
+                <span class="text">距离下一次发工资还有: {{ data.date }} 天</span>
             </li>
             <li>
                 <svg class="icon-yesterdaypay" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="18122" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <path d="M365.393 657.295l194.99-55.32L421.103 463.652 365.393 657.295 365.393 657.295zM886.183 278.398 746.902 140.075 440.493 444.378l139.271 138.318L886.183 278.398 886.183 278.398zM845.593 790.623c0 48.064-39.009 87.058-87.117 87.058l-522.73 0c-48.132 0-87.122-38.994-87.122-87.058L148.624 268.282c0-48.093 38.989-87.058 87.122-87.058l348.482 0 87.126-87.058L206.708 94.166c-80.206 0-145.209 64.95-145.209 145.092l0 580.389c0 80.148 65.003 145.097 145.209 145.097l580.807 0c80.187 0 145.204-64.95 145.204-145.097L932.719 355.336l-87.126 87.058L845.593 790.623 845.593 790.623zM950.913 162.203 863.86 75.758c-14.42-14.327-38.586-13.549-53.968 1.726l-41.791 41.494 139.271 138.318 41.795-41.499C964.55 200.522 965.328 176.531 950.913 162.203L950.913 162.203zM950.913 162.203" p-id="18123"></path>
                 </svg>
-                <span class="text">昨天吃了 xx 家店</span>
+                <span class="text">上次吃了: {{ data.yesterday }}</span>
             </li>
         </ul>
         <div class="budget cd">
@@ -38,15 +38,15 @@
                 <span>预算: </span>
             </div>
             <div class="miku-input">
-                <input type="radio" name="budget" id="budget-high" value="high" v-model="from.budget" />
+                <input type="radio" name="budget" id="budget-high" value="3" v-model="from.budget" />
                 <label for="budget-high">高</label>
             </div>
             <div class="miku-input">
-                <input type="radio" name="budget" id="budget-medium" value="medium" v-model="from.budget" />
+                <input type="radio" name="budget" id="budget-medium" value="2" v-model="from.budget" />
                 <label for="budget-medium">中</label>
             </div>
             <div class="miku-input">
-                <input type="radio" name="budget" id="budget-low" value="low" v-model="from.budget" />
+                <input type="radio" name="budget" id="budget-low" value="1" v-model="from.budget" />
                 <label for="budget-low">低</label>
             </div>
             <br>
@@ -57,26 +57,27 @@
                 <span>就餐方式: </span>
             </div>
             <div class="miku-input">
-                <input type="checkbox" name="way" id="way-goout" value="goout" v-model="from.way" />
+                <input type="checkbox" name="way" id="way-goout" value="2" v-model="from.way" />
                 <label for="way-goout">外出就餐</label>
             </div>
             <div class="miku-input">
-                <input type="checkbox" name="way" id="way-takeaway" value="takeaway" v-model="from.way" />
+                <input type="checkbox" name="way" id="way-takeaway" value="1" v-model="from.way" />
                 <label for="way-takeaway">点外卖</label>
             </div>
         </div>
         <div class="result cd">
-            今日推荐结果: 外出--卤面馆--人均 12 元
+            今日推荐结果: {{ data.result }}
+            <!-- 外出--卤面馆--人均 12 元 -->
         </div>
         <div class="feedback">
-            <div class="another">
+            <div class="another" @click="another">
                 <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5725" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <path d="M873.98587 511.769756c23.939225 0.320295 47.88459 0.639566 71.822792 0.958838-0.638543 0.63752-1.276063 1.276063-1.914606 1.913583-37.663808 56.814983-75.337849 113.64634-113.000634 170.459277-0.638543-0.320295-1.277086-0.638543-1.916653-0.957815-37.981033-57.452503-75.974345-114.921379-113.957425-172.374906 23.939225 0 47.88459 0 71.823815 0 2.456958-147.118686-102.745059-240.978377-220.256426-270.052552-61.804624-15.291265-132.651182 2.13257-175.246303 22.025643-17.676591 8.255011-32.69668 25.062815-52.66957 29.687136-32.355919 7.489578-63.152319-24.143886-50.754964-57.458643 8.836249-23.74275 36.657898-32.898271 57.45762-45.008077 59.767222-34.796504 167.610392-54.748928 254.731612-30.643927C747.232001 201.026456 874.512872 324.777945 873.98587 511.769756z" p-id="5726"></path>
                     <path d="M237.158886 511.769756c-2.413979 144.517441 101.345176 240.326531 216.425168 269.094738 65.179488 16.295128 139.481751-1.283226 183.865611-23.940249 15.639189-8.937556 31.283494-17.877159 46.924729-26.814716 33.232892-8.856715 64.129576 24.098861 51.710732 57.45762-7.695263 20.672832-30.831192 29.606295-48.839335 40.222073-60.294225 35.541471-166.753885 61.726853-258.560824 36.389792C278.944572 822.85177 149.454382 701.629895 150.015154 511.769756c-23.939225 0-47.88459 0-71.822792 0 0-0.319272 0-0.638543 0-0.957815 0.638543-0.638543 1.277086-1.277086 1.915629-1.915629 37.663808-56.81396 75.337849-113.645316 113.000634-170.459277 0.638543 0.319272 1.277086 0.638543 1.915629 0.957815 37.982056 57.452503 75.976392 114.922403 113.958448 172.373883C285.043477 511.769756 261.097088 511.769756 237.158886 511.769756z" p-id="5727"></path>
                 </svg>
                 <span>换一个</span>
             </div>
-            <div class="determine">
+            <div class="determine" @click="determine">
                 <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6929" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <path d="M838.940444 207.644444l-432.924444 432.924445-199.793778-199.736889A87.495111 87.495111 0 0 0 82.488889 564.508444l261.688889 261.688889c34.133333 34.133333 89.543111 34.133333 123.676444 0l494.762667-494.819555a87.438222 87.438222 0 1 0-123.676445-123.733334" p-id="6930"></path>
                 </svg>
@@ -90,9 +91,117 @@ export default {
     data() {
         return {
             from: {
-                budget: 'low', // 预算
-                way: ['goout'] // 就餐方式
+                budget: '2', // 预算
+                way: ['2'] // 就餐方式
+            },
+            data: new Object()
+        }
+    },
+    methods: {
+        another(){
+            if(this.data.yesterday==='暂无数据'){
+                this.$emit('handleText', ['数据库里暂时还没数据哦, 快去添加吧~']);
+            }else{
+                this.$emit('handleText', ['换好了~']);
+                this.handleData();
             }
+        },
+        determine(){
+            let mikuHistory = this.$storejs.get('mikuHistory') ? this.$storejs.get('mikuHistory') : [];
+            if(this.data.yesterday==='暂无数据'){
+                this.$emit('handleText', ['数据库里暂时还没数据哦, 快去添加吧~']);
+                return false;
+            }else{
+                mikuHistory.push({
+                    name: this.data.name,
+                    budget: this.data.budget,
+                    way: this.data.way
+                });
+                this.$storejs.set('mikuHistory', mikuHistory);
+                this.$emit('handleText', ['祝你就餐愉快~']);
+                this.$router.push('/statistics');
+            }
+        },
+        // 转换数据格式为明文
+        convert(budget, way){
+            let d = new Array();
+            if(budget==='1'){
+                d.push('低');
+            }else if(budget==='2'){
+                d.push('中');
+            }else{
+                d.push('高');
+            }
+            if(way==='1'){
+                d.push('外出');
+            }else{
+                d.push('外卖');
+            }
+            return d;
+        },
+        // 处理数据
+        handleData(){
+            let data = this.$storejs.get('mikuData');
+            let list = new Array();
+            // 循环数据库, 获取全部符合条件的数据
+            data.forEach((el, index) => {
+                if(el.budget===this.from.budget && (this.from.way).indexOf(el.way) !== -1){
+                    list.push(el);
+                }
+            });
+            // 从符合条件的数据中随机出一个数据
+            if(list.length){
+                let randData = list[Math.floor(Math.random()*list.length)];
+                let mikuHistory = this.$storejs.get('mikuHistory');
+                const day = (new Date()).getDate();
+                const convert = this.convert(randData.budget, randData.way);
+                this.data = {
+                    date: day < 10 ? 10 - day : this.getCountDays - day + 10,
+                    name: randData.name,
+                    budget: randData.budget,
+                    way: randData.way,
+                    result: convert[1] + '--'+ randData.name +'--预算: ' + convert[0],
+                    yesterday: mikuHistory.length ? mikuHistory.pop().name : '暂无原始数据'
+                }
+                this.$emit('handleText', ['今日推荐结果: ' + this.data.result])
+            }else{
+                this.handleNullData();
+            }
+        },
+        // 如果没有符合条件的数据
+        handleNullData(){
+            this.$emit('handleText', ['数据库里暂时还没符合条件数据哦, 快去添加吧~']);
+            const day = (new Date()).getDate();
+            this.data = {
+                date: day < 10 ? 10 - day : this.getCountDays - day + 10,
+                yesterday: '暂无数据',
+                result: '暂无数据'
+            }
+        }
+    },
+    created(){
+        let data = this.$storejs.get('mikuData');
+        if(data){
+            this.handleData();
+        }else{
+            this.handleNullData();
+        }
+    },
+    computed: {
+        getCountDays() {
+            const curDate = new Date();
+            const curMonth = curDate.getMonth();
+            curDate.setMonth(curMonth + 1);
+            curDate.setDate(0);
+            return curDate.getDate();
+        }
+    },
+    watch: {
+        from:{
+            handler: function(val) { //此处不要使用箭头函数
+                this.handleData()
+            },
+            deep: true
         }
     }
 }

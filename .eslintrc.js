@@ -15,9 +15,14 @@ module.exports = {
         'allowTemplateLiterals': true
     }],
     'details': ['last'],
-    "indent": ["error", 4]
+    "indent": ["error", 4],
+    "prettier/prettier": [
+      {
+        // "Bracket Spacing": false
+      }
+    ]
   },
   parserOptions: {
     parser: 'babel-eslint'
-  }
+  } 
 }
