@@ -4,7 +4,7 @@
  * File Created: Saturday, 30th June 2018 9:28:09 am
  * Author: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
- * Last Modified: Sunday, 1st July 2018 12:01:43 am
+ * Last Modified: Tuesday, 3rd July 2018 3:10:32 pm
  * Modified By: Ice-Hazymoon (imiku.me@gmail.com)
  */
 <template>
@@ -17,13 +17,6 @@
     </div>
 </template>
 <script>
-function strMapToObj(strMap) {
-    let obj = Object.create(null);
-    for (let [k, v] of strMap) {
-        obj[k] = v;
-    }
-    return obj;
-}
 export default {
     data () {
         return {
@@ -43,8 +36,8 @@ export default {
     },
     mounted() {
         let data = this.$storejs.get('mikuHistory');
-        if(data.length){
-            let mmm = data.map((el, index)=>{
+        if(data && data.length){
+            let mmm = data.map((el)=>{
                 return el.name
             }).reduce((m, k) => {
                 return m.set(k, (m.get(k) || 0) + 1);

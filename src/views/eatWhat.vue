@@ -4,7 +4,7 @@
  * File Created: Saturday, 30th June 2018 9:28:09 am
  * Author: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
- * Last Modified: Sunday, 1st July 2018 12:12:20 am
+ * Last Modified: Tuesday, 3rd July 2018 3:11:07 pm
  * Modified By: Ice-Hazymoon (imiku.me@gmail.com)
  */
 <template>
@@ -14,7 +14,7 @@
                 <svg class="icon-weather" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9447" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <path d="M709.752388 316.898487c-41.097-83.232656-126.598326-140.670833-225.734184-140.670833-132.88245 0-241.472634 103.016235-250.900354 233.466286-97.686856 27.871791-168.814824 113.181759-168.814824 214.230176 0 119.193683 99.053993 216.306464 223.848231 223.192292 0 0 387.006218 0.655939 391.734916 0.655939 146.818857 0 279.8108-119.027907 279.8108-265.820158C959.69595 440.46271 849.137948 325.150428 709.752388 316.898487zM679.88515 791.8108c-3.552919 0-391.734916 0-391.734916 0s-168.924317-17.324574-167.886685-167.886685c0.600681-84.981487 75.198679-162.803923 167.886685-167.886685 0-115.912963 74.161047-223.848231 195.866946-223.848231 96.04752 0 160.125931 58.640562 182.941566 140.288117 138.64878-6.066159 232.401024 103.617939 236.773611 195.48423C909.609205 691.417299 780.632715 791.8108 679.88515 791.8108z" p-id="9448"></path>
                 </svg>
-                <span class="text">今天天气为: 晴</span>
+                <span class="text">今天天气为: {{ weather }}</span>
             </li>
             <li>
                 <svg class="icon-date" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17812" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -144,13 +144,13 @@ export default {
             let data = this.$storejs.get('mikuData');
             let list = new Array();
             // 循环数据库, 获取全部符合条件的数据
-            data.forEach((el, index) => {
+            data.forEach((el) => {
                 if(el.budget===this.from.budget && (this.from.way).indexOf(el.way) !== -1){
                     list.push(el);
                 }
             });
             // 从符合条件的数据中随机出一个数据
-            if(list.length){
+            if(list && list.length){
                 let randData = list[Math.floor(Math.random()*list.length)];
                 let mikuHistory = this.$storejs.get('mikuHistory');
                 const day = (new Date()).getDate();
@@ -161,7 +161,7 @@ export default {
                     budget: randData.budget,
                     way: randData.way,
                     result: convert[1] + '--'+ randData.name +'--预算: ' + convert[0],
-                    yesterday: mikuHistory.length ? mikuHistory.pop().name : '暂无原始数据'
+                    yesterday: (mikuHistory && mikuHistory.length) ? mikuHistory.pop().name : '暂无原始数据'
                 }
                 this.$emit('handleText', ['今日推荐结果: ' + this.data.result])
             }else{
@@ -187,6 +187,9 @@ export default {
             this.handleNullData();
         }
     },
+    mounted(){
+        this.handleData();
+    },
     computed: {
         getCountDays() {
             const curDate = new Date();
@@ -194,11 +197,19 @@ export default {
             curDate.setMonth(curMonth + 1);
             curDate.setDate(0);
             return curDate.getDate();
+        },
+        weather(){
+            let sw = this.$storejs.get('mikuWeather');
+            if(!sw){
+                sw = '暂无数据'
+                return false;
+            }
+            return sw===1 ? '晴' : '阴';
         }
     },
     watch: {
         from:{
-            handler: function(val) { //此处不要使用箭头函数
+            handler: function() {
                 this.handleData()
             },
             deep: true

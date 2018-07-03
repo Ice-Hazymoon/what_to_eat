@@ -4,7 +4,7 @@
  * File Created: Wednesday, 27th June 2018 9:35:06 pm
  * Author: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
- * Last Modified: Saturday, 30th June 2018 8:37:41 pm
+ * Last Modified: Tuesday, 3rd July 2018 3:11:57 pm
  * Modified By: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
  * Copyright 2017 - 2018
@@ -73,10 +73,11 @@
 </template>
 <script>
 import audioArr from '../assets/js/audio.js';
+const loadlive2d = window.loadlive2d
 export default {
     data() {
         return {
-            text: ["少女祈祷中..."],
+            text: ['少女祈祷中...'],
             textClass: null,
             live2dLoad: false,
             hitokotoInterval: null,
@@ -97,10 +98,12 @@ export default {
             this.$http.get('https://api.imiku.me/weather.php').then(e => {
                 let day = parseInt(e.data.results[0].daily[0].code_day);
                 if ([1, 2, 3, 4, 5, 6, 7, 8, 9].indexOf(day) === -1) {
+                    this.$storejs.set('mikuWeather', 0);
                     setTimeout(() => {
                         this.handleText(['今日天气不太好呢, 出门记得带装备哦~']);
                     }, 2000)
                 } else {
+                    this.$storejs.set('mikuWeather', 1);
                     setTimeout(() => {
                         this.handleText(['今天天气还不错, 多出去走走哦~']);
                     }, 2000)
@@ -131,8 +134,8 @@ export default {
             const modelConfig = this.$storejs.get('modelConfig');
             if (!modelConfig) {
                 loadlive2d(
-                    "live2d",
-                    "https://api.imiku.me/live2d/get/?id=" + modelId + '-' + modelTexturesId,
+                    'live2d',
+                    'https://api.imiku.me/live2d/get/?id=' + modelId + '-' + modelTexturesId,
                     this.handleText()
                 );
                 this.$storejs.set('modelConfig', {
@@ -141,8 +144,8 @@ export default {
                 });
             } else {
                 loadlive2d(
-                    "live2d",
-                    "https://api.imiku.me/live2d/get/?id=" + modelConfig.modelId + '-' + modelConfig.modelTexturesId,
+                    'live2d',
+                    'https://api.imiku.me/live2d/get/?id=' + modelConfig.modelId + '-' + modelConfig.modelTexturesId,
                 );
             }
         },
@@ -188,7 +191,7 @@ export default {
                 .then(e => {
                     this.handleText(['『' + e.data.hitokoto + '』--- 来自: ' + e.data.from], 'hitokoto');
                 })
-                .catch(err => {
+                .catch(() => {
                     this.getHitokoto();
                 })
         },
@@ -199,8 +202,8 @@ export default {
             let rand1 = Math.floor(Math.random() * audioArr[1].length + 1) - 1;
             const audioSrc = modelConfig.modelId === 1 ? audioArr[0][rand0] : audioArr[1][rand1];
             this.audio.src = audioSrc;
-            let playPromise = this.audio.play();
-            this.handleText(['是…是不小心碰到了吧...', '萝莉控是什么呀?', '你看到我的小熊了吗?', '再摸的话我可要报警了！⌇●﹏●⌇', '110吗，这里有个变态一直在摸我(ó﹏ò｡)'], 'warn')
+            this.handleText(['是…是不小心碰到了吧...', '萝莉控是什么呀?', '你看到我的小熊了吗?', '再摸的话我可要报警了！⌇●﹏●⌇', '110吗，这里有个变态一直在摸我(ó﹏ò｡)'], 'warn');
+            this.audio.play();
         },
         // 视觉差
         handleMouseMove(e) {

@@ -4,7 +4,7 @@
  * File Created: Saturday, 30th June 2018 9:28:09 am
  * Author: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
- * Last Modified: Sunday, 1st July 2018 12:12:34 am
+ * Last Modified: Tuesday, 3rd July 2018 2:31:38 pm
  * Modified By: Ice-Hazymoon (imiku.me@gmail.com)
  */
 <template>
@@ -86,9 +86,9 @@ export default {
                 d.push('高');
             }
             if(item.way==='1'){
-                d.push('外出');
-            }else{
                 d.push('外卖');
+            }else{
+                d.push('外出');
             }
             return d;
         },

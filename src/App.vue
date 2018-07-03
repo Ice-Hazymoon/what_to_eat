@@ -5,52 +5,12 @@
 </template>
 
 <script>
-import Window from "./components/Window.vue";
+import Window from './components/Window.vue';
 
 export default {
-    name: "app",
+    name: 'app',
     components: {
         Window,
-    },
-    methods: {
-        showtpwidget(){
-            (function (T, h, i, n, k, P, a, g, e) {
-                g = function () {
-                    P = h.createElement(i);
-                    a = h.getElementsByTagName(i)[0];
-                    P.src = k;
-                    P.charset = "utf-8";
-                    P.async = 1;
-                    a.parentNode.insertBefore(P, a)
-                };
-                T["ThinkPageWeatherWidgetObject"] = n;
-                T[n] || (T[n] = function () {
-                    (T[n].q = T[n].q || []).push(arguments)
-                });
-                T[n].l = +new Date();
-                if (T.attachEvent) {
-                    T.attachEvent("onload", g)
-                } else {
-                    T.addEventListener("load", g, false)
-                }
-            }(window, document, "script", "tpwidget", "//widget.seniverse.com/widget/chameleon.js"));
-            tpwidget("init", {
-                "flavor": "bubble",
-                "location": "WK3N92NQV6RQ",
-                "geolocation": "enabled",
-                "position": "top-left",
-                "margin": "10px 10px",
-                "language": "auto",
-                "unit": "c",
-                "theme": "chameleon",
-                "uid": "U5C7722107",
-                "hash": "3d476b17f8c2c3496c45bd3beecefa15"
-            });
-            tpwidget("show");
-        }
-    },
-    mounted() {
-        this.showtpwidget();
     }
 };
 </script>
