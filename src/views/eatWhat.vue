@@ -4,7 +4,7 @@
  * File Created: Saturday, 30th June 2018 9:28:09 am
  * Author: Ice-Hazymoon (imiku.me@gmail.com)
  * -----
- * Last Modified: Tuesday, 3rd July 2018 3:11:07 pm
+ * Last Modified: Saturday, 7th July 2018 9:54:23 am
  * Modified By: Ice-Hazymoon (imiku.me@gmail.com)
  */
 <template>
@@ -144,6 +144,7 @@ export default {
             let data = this.$storejs.get('mikuData');
             let list = new Array();
             // 循环数据库, 获取全部符合条件的数据
+            if(!data) return false;
             data.forEach((el) => {
                 if(el.budget===this.from.budget && (this.from.way).indexOf(el.way) !== -1){
                     list.push(el);
